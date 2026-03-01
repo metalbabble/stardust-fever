@@ -3,12 +3,23 @@ class GameScene extends Phaser.Scene {
         super({ key: 'GameScene' });
     }
 
+    preload() {
+        // Load player sprite
+        this.load.image('player', 'assets/player.gif');
+        // Load buggy sprite
+        this.load.image('buggy', 'assets/buggy.gif');
+    }
+
     create() {
         // Create starfield background
         this.createStarfield();
 
         // Initialize game state
         this.isGameOver = false;
+
+        // Initialize invincibility state
+        this.isInvincible = false;
+        this.invincibilityTimer = null;
 
         // Initialize health
         this.health = 100;
@@ -76,7 +87,7 @@ class GameScene extends Phaser.Scene {
         // Setup Enter key for game over
         this.input.keyboard.on('keydown-ENTER', () => {
             if (this.isGameOver) {
-                this.scene.restart();
+                this.scene.start('TitleScene');
             }
         });
     }
@@ -219,17 +230,31 @@ class GameScene extends Phaser.Scene {
     }
 
     playerHitEnemy(player, enemy) {
+        // Check if player is invincible
+        if (this.isInvincible) {
+            return;
+        }
+
         // Reduce health
         this.health -= 10;
         this.updateHealthBar();
 
-        // Create flash effect on player
-        this.tweens.add({
-            targets: player,
-            alpha: 0.3,
-            duration: 100,
-            yoyo: true,
-            repeat: 2
+        // Set player as invincible
+        this.isInvincible = true;
+        player.setAlpha(0.5);
+
+        // Clear any existing invincibility timer
+        if (this.invincibilityTimer) {
+            this.invincibilityTimer.remove();
+        }
+
+        // Set timer to end invincibility
+        this.invincibilityTimer = this.time.delayedCall(GameConfig.INVINCIBILITY_DURATION, () => {
+            this.isInvincible = false;
+            if (player.active) {
+                player.setAlpha(1);
+            }
+            this.invincibilityTimer = null;
         });
 
         // Check for game over

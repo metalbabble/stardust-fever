@@ -1,31 +1,6 @@
 class Buggy extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, player) {
-        // Create buggy texture if it doesn't exist
-        if (!scene.textures.exists('buggy')) {
-            const graphics = scene.make.graphics({ x: 0, y: 0, add: false });
-            
-            // Draw a simple alien bug shape
-            graphics.fillStyle(0xff0000);
-            graphics.fillCircle(15, 15, 12); // Body
-            
-            // Eyes
-            graphics.fillStyle(0xffff00);
-            graphics.fillCircle(12, 12, 3);
-            graphics.fillCircle(18, 12, 3);
-            
-            // Antennae
-            graphics.lineStyle(2, 0xff0000);
-            graphics.beginPath();
-            graphics.moveTo(10, 10);
-            graphics.lineTo(5, 5);
-            graphics.moveTo(20, 10);
-            graphics.lineTo(25, 5);
-            graphics.strokePath();
-            
-            graphics.generateTexture('buggy', 30, 30);
-            graphics.destroy();
-        }
-
+        // Use the preloaded buggy.gif image
         super(scene, x, y, 'buggy');
         
         scene.add.existing(this);

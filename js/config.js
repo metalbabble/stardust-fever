@@ -14,4 +14,5 @@ const GameConfig = {
     ASTEROID_SPAWN_WEIGHT: 0.7, // 70% chance for asteroid
     ATOM_SPAWN_INTERVAL_MIN: 20000, // 20 seconds
     ATOM_SPAWN_INTERVAL_MAX: 30000, // 30 seconds
+    INVINCIBILITY_DURATION: 3000, // 3 seconds
 };

@@ -1,18 +1,6 @@
 class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
-        // Create a triangle sprite for the player ship
-        const graphics = scene.make.graphics({ x: 0, y: 0, add: false });
-        graphics.fillStyle(0x00ff00);
-        graphics.beginPath();
-        graphics.moveTo(15, 0);
-        graphics.lineTo(-10, -8);
-        graphics.lineTo(-10, 8);
-        graphics.closePath();
-        graphics.fill();
-        
-        graphics.generateTexture('player', 30, 20);
-        graphics.destroy();
-
+        // Use the preloaded player.gif image
         super(scene, x, y, 'player');
         
         scene.add.existing(this);

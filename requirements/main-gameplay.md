@@ -11,6 +11,7 @@
 
 - The player has "sheilds" which works like health. The game play starts with sheilds at 100. When a player collides with a buggy or asteroid - they lose 10 health points. When the health points go below zero, the game is over. (See below)
 - The amount of shield power is displayed as a bar chart (a health bar) on the top-left of the gameplay area. There is small text that says "SHEILD %" in front of the bar. THe bar shows %100 down to zero as the player's health increases or decreases.
+- When the shield is being decreased due to a player collision, there should be a brief period of invincibility where the player does not take consecutive damage from objects. This period of invincibility only lasts for a few seconds. While invincible, the player graphic is transparent to show this state.
 
 # Game over
 

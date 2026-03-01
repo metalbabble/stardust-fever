@@ -40,11 +40,16 @@ class Asteroid extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        // Set random velocity
-        const angle = Math.random() * Math.PI * 2;
+        // Set velocity towards center with some randomness
+        const centerX = GameConfig.WIDTH / 2;
+        const centerY = GameConfig.HEIGHT / 2;
+        const angleToCenter = Math.atan2(centerY - y, centerX - x);
+        // Add some randomness to the angle (-30 to +30 degrees)
+        const randomOffset = (Math.random() - 0.5) * Math.PI / 3;
+        const finalAngle = angleToCenter + randomOffset;
         const speed = GameConfig.ASTEROID_SPEED;
-        this.body.velocity.x = Math.cos(angle) * speed;
-        this.body.velocity.y = Math.sin(angle) * speed;
+        this.body.velocity.x = Math.cos(finalAngle) * speed;
+        this.body.velocity.y = Math.sin(finalAngle) * speed;
 
         this.setCollideWorldBounds(false);
         
@@ -70,8 +75,10 @@ class Asteroid extends Phaser.Physics.Arcade.Sprite {
     }
 
     destroy() {
-        // Create particle effect
-        this.scene.createParticles(this.x, this.y, 0xffaa00);
+        // Create particle effect (only if scene is still active)
+        if (this.scene && this.scene.createParticles) {
+            this.scene.createParticles(this.x, this.y, 0xffaa00);
+        }
         
         super.destroy();
     }
