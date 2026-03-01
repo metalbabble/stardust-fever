@@ -45,3 +45,9 @@ Frequency: Rare
 Name: Turbo
 Effect: The player's rotate and move speed slightly increases
 Frequency: Very Uncommon
+
+# Shield restore
+
+Name: Shield restore
+Effect: Recover 20 health points (can't have more than 100 though!)
+Frequency: Common
