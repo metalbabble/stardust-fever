@@ -68,6 +68,9 @@ class PowerUpManager {
     }
 
     blackHole() {
+        // Play wooshing sound
+        this.scene.soundManager.playBlackHole();
+        
         // Screen blink effect
         const overlay = this.scene.add.rectangle(
             0, 0,
@@ -113,6 +116,9 @@ class PowerUpManager {
     }
 
     showPowerUpText(powerUpName) {
+        // Play notification sound
+        this.scene.soundManager.playPowerUpNotification();
+        
         const text = this.scene.add.text(
             GameConfig.WIDTH / 2,
             50,

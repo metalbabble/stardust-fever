@@ -74,6 +74,9 @@ class GameScene extends Phaser.Scene {
         // Power-up manager
         this.powerUpManager = new PowerUpManager(this);
 
+        // Sound manager
+        this.soundManager = new SoundManager(this);
+
         // Shooting timer
         this.lastFireTime = 0;
 
@@ -121,6 +124,9 @@ class GameScene extends Phaser.Scene {
 
     fireBullets() {
         const pm = this.powerUpManager;
+        
+        // Play bullet fire sound
+        this.soundManager.playBulletFire();
         
         // Forward shots
         const angles = [0];
@@ -214,6 +220,7 @@ class GameScene extends Phaser.Scene {
         bullet.setActive(false);
         bullet.setVisible(false);
         asteroid.destroy();
+        this.soundManager.playAsteroidDestroyed();
         this.addScore(10);
     }
 
@@ -221,11 +228,13 @@ class GameScene extends Phaser.Scene {
         bullet.setActive(false);
         bullet.setVisible(false);
         buggy.destroy();
+        this.soundManager.playBuggyDestroyed();
         this.addScore(50);
     }
 
     playerCollectAtom(player, atom) {
         atom.collect();
+        this.soundManager.playAtomCollected();
         this.addScore(100);
         this.powerUpManager.grantRandomPowerUp();
     }
@@ -239,6 +248,7 @@ class GameScene extends Phaser.Scene {
         // Reduce health
         this.health -= 10;
         this.updateHealthBar();
+        this.soundManager.playPlayerHit();
 
         // Set player as invincible
         this.isInvincible = true;
@@ -351,6 +361,7 @@ class GameScene extends Phaser.Scene {
 
     gameOver() {
         this.isGameOver = true;
+        this.soundManager.playGameOver();
 
         // Stop all moving objects
         this.asteroids.children.entries.forEach(asteroid => {
