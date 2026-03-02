@@ -37,8 +37,8 @@ class TitleScene extends Phaser.Scene {
         // Copyright text
         const copyright = this.add.text(
             GameConfig.WIDTH / 2,
-            400,
-            '© 2026 metalbabble.com - Version 1.0',
+            570,
+            `Copyright 2026 metalbabble.com - Version ${GameConfig.VERSION}`,
             {
                 font: '14px Courier New',
                 fill: '#888888',

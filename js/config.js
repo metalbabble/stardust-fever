@@ -1,5 +1,6 @@
 // Game configuration constants
 const GameConfig = {
+    VERSION: '1.0.1',
     WIDTH: 800,
     HEIGHT: 600,
     PLAYER_ROTATION_SPEED: 0.05,
