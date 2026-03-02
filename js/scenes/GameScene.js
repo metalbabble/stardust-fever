@@ -8,11 +8,28 @@ class GameScene extends Phaser.Scene {
         this.load.image('player', 'assets/player.gif');
         // Load buggy sprite
         this.load.image('buggy', 'assets/buggy.gif');
+        
+
+        //TODO: make less repetative
+        // Load background music
+        this.load.audio('bgm1', 'assets/bgm/m1.mp3');
+        this.load.audio('bgm2', 'assets/bgm/m2.mp3');
+        this.load.audio('bgm3', 'assets/bgm/m3.mp3');
+        this.load.audio('bgm4', 'assets/bgm/m4.mp3');
+        this.load.audio('bgm5', 'assets/bgm/m5.mp3');
+        this.load.audio('bgm6', 'assets/bgm/m6.mp3');
+        this.load.audio('bgm7', 'assets/bgm/m7.mp3');
     }
 
     create() {
         // Create starfield background
         this.createStarfield();
+
+        // Start background music
+        const bgmTracks = GameConfig.MUSIC_LIST; 
+        const randomTrack = Phaser.Utils.Array.GetRandom(bgmTracks);
+        this.bgMusic = this.sound.add(randomTrack, { loop: true, volume: 0.33 });
+        this.bgMusic.play();
 
         // Initialize game state
         this.isGameOver = false;
@@ -362,6 +379,11 @@ class GameScene extends Phaser.Scene {
     gameOver() {
         this.isGameOver = true;
         this.soundManager.playGameOver();
+        
+        // Stop background music
+        if (this.bgMusic) {
+            this.bgMusic.stop();
+        }
 
         // Stop all moving objects
         this.asteroids.children.entries.forEach(asteroid => {
