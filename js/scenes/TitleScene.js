@@ -25,7 +25,7 @@ class TitleScene extends Phaser.Scene {
         const instructions = this.add.text(
             GameConfig.WIDTH / 2,
             300,
-            'Use left/right arrow keys to rotate ship.\nShoot asteroids and aliens - but try and\ncollect "atoms" to receive various power ups!\nHow long can you survive!?',
+            'Directions: Use LEFT/RIGHT arrow keys to rotate ship and\n UP arrow to thrust forward. \nShoot asteroids and aliens - but try and\ncollect "atoms" to receive various power ups!\nHow long can you survive!?',
             {
                 font: '18px Courier New',
                 fill: '#ffff00',
@@ -33,6 +33,19 @@ class TitleScene extends Phaser.Scene {
             }
         );
         instructions.setOrigin(0.5);
+
+        // Copyright text
+        const copyright = this.add.text(
+            GameConfig.WIDTH / 2,
+            400,
+            '© 2026 metalbabble.com - Version 1.0',
+            {
+                font: '14px Courier New',
+                fill: '#888888',
+                align: 'center'
+            }
+        );
+        copyright.setOrigin(0.5);
 
         // Start prompt
         const startText = this.add.text(
