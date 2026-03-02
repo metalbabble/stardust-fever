@@ -28,6 +28,11 @@ This file lists the primary game objects, describing their behaviors and appeara
 - These float slowly in a random direction
 - If one exists the gameplay area, it appears on the opposite side
 
+# asteroid-XL
+- A larger version of the regular asteroid
+- is destroyable. when destroied, spawns 2 new asteroids in it's place. (And awards 5 points)
+- begins to appear after the game has been played for at least 15 seconds
+
 # atom
 - This is a good item.
 - Bullet don't destory it.

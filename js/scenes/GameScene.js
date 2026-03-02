@@ -33,6 +33,7 @@ class GameScene extends Phaser.Scene {
 
         // Initialize game state
         this.isGameOver = false;
+        this.gameStartTime = this.time.now; // Track when game started
 
         // Initialize invincibility state
         this.isInvincible = false;
@@ -203,11 +204,22 @@ class GameScene extends Phaser.Scene {
                 break;
         }
 
+        // Check if game has been running for at least 15 seconds
+        const gameTime = this.time.now - this.gameStartTime;
+        const canSpawnXL = gameTime >= 15000;
+
         // 70% chance asteroid, 30% buggy
         if (Math.random() < GameConfig.ASTEROID_SPAWN_WEIGHT) {
-            const asteroid = new Asteroid(this, x, y);
-            this.asteroids.add(asteroid);
-            asteroid.init(); // Set initial velocity after adding to group
+            // 20% chance for XL asteroid if enough time has passed
+            if (canSpawnXL && Math.random() < 0.2) {
+                const asteroidXL = new AsteroidXL(this, x, y);
+                this.asteroids.add(asteroidXL);
+                asteroidXL.init();
+            } else {
+                const asteroid = new Asteroid(this, x, y);
+                this.asteroids.add(asteroid);
+                asteroid.init();
+            }
         } else {
             const buggy = new Buggy(this, x, y, this.player);
             this.buggies.add(buggy);
@@ -236,9 +248,22 @@ class GameScene extends Phaser.Scene {
     bulletHitAsteroid(bullet, asteroid) {
         bullet.setActive(false);
         bullet.setVisible(false);
+        
+        // Check if this is an XL asteroid
+        if (asteroid.isXL) {
+            // Spawn 2 regular asteroids at the XL's position
+            for (let i = 0; i < 2; i++) {
+                const newAsteroid = new Asteroid(this, asteroid.x, asteroid.y);
+                this.asteroids.add(newAsteroid);
+                newAsteroid.init();
+            }
+            this.addScore(5);
+        } else {
+            this.addScore(10);
+        }
+        
         asteroid.destroy();
         this.soundManager.playAsteroidDestroyed();
-        this.addScore(10);
     }
 
     bulletHitBuggy(bullet, buggy) {

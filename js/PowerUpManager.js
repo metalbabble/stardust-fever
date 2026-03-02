@@ -48,7 +48,7 @@ class PowerUpManager {
     }
 
     rapidFireIncrease() {
-        this.fireRateMultiplier *= 0.85; // Faster fire rate (lower delay)
+        this.fireRateMultiplier *= 0.5//85; // Faster fire rate (lower delay)
     }
 
     tripleShot() {

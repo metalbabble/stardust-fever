@@ -5,7 +5,7 @@ const GameConfig = {
     PLAYER_ROTATION_SPEED: 0.05,
     PLAYER_MOVE_SPEED: 200,
     BULLET_SPEED: 400,
-    BULLET_FIRE_RATE: 1000, // milliseconds
+    BULLET_FIRE_RATE: 750, // milliseconds
     ASTEROID_SPEED: 50,
     BUGGY_SPEED: 100,
     SPAWN_RATE_INITIAL: 2000, // milliseconds
