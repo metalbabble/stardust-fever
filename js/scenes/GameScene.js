@@ -184,6 +184,7 @@ class GameScene extends Phaser.Scene {
         if (Math.random() < GameConfig.ASTEROID_SPAWN_WEIGHT) {
             const asteroid = new Asteroid(this, x, y);
             this.asteroids.add(asteroid);
+            asteroid.init(); // Set initial velocity after adding to group
         } else {
             const buggy = new Buggy(this, x, y, this.player);
             this.buggies.add(buggy);

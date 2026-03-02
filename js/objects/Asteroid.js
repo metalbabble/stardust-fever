@@ -40,26 +40,32 @@ class Asteroid extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        // Set velocity towards center with some randomness
-        const centerX = GameConfig.WIDTH / 2;
-        const centerY = GameConfig.HEIGHT / 2;
-        const angleToCenter = Math.atan2(centerY - y, centerX - x);
-        // Add some randomness to the angle (-30 to +30 degrees)
-        const randomOffset = (Math.random() - 0.5) * Math.PI / 3;
-        const finalAngle = angleToCenter + randomOffset;
-        const speed = GameConfig.ASTEROID_SPEED;
-        this.body.velocity.x = Math.cos(finalAngle) * speed;
-        this.body.velocity.y = Math.sin(finalAngle) * speed;
-
         this.setCollideWorldBounds(false);
         
         // Slow rotation
         this.rotationSpeed = Phaser.Math.FloatBetween(-0.02, 0.02);
     }
 
+    init() {
+        // Set velocity towards center with some randomness
+        const centerX = GameConfig.WIDTH / 2;
+        const centerY = GameConfig.HEIGHT / 2;
+        const angleToCenter = Math.atan2(centerY - this.y, centerX - this.x);
+        // Add some randomness to the angle (-30 to +30 degrees)
+        const randomOffset = (Math.random() - 0.5) * Math.PI / 3;
+        const finalAngle = angleToCenter + randomOffset;
+        const speed = GameConfig.ASTEROID_SPEED;
+        
+        this.scene.physics.velocityFromRotation(
+            finalAngle,
+            speed,
+            this.body.velocity
+        );
+    }
+
     update() {
         this.rotation += this.rotationSpeed;
-        
+    
         // Wrap around screen edges
         if (this.x < -25) {
             this.x = GameConfig.WIDTH + 25;
@@ -72,6 +78,7 @@ class Asteroid extends Phaser.Physics.Arcade.Sprite {
         } else if (this.y > GameConfig.HEIGHT + 25) {
             this.y = -25;
         }
+            
     }
 
     destroy() {
