@@ -6,8 +6,3 @@
 - in addition to score, number of seconds the player survived for
 - every 3 minutes double the generation rate for asteroids and aliens
 - maybe add a ship that moves horizontally after a long period? (rare)
-
-Known bugs:
-
-- Game over screen sometimes still "does stuff" after game over. Should probably freeze completely or go black.
-- Sometimes final score shown doesn't match score on top - probably related to the issue above.
