@@ -353,6 +353,7 @@ class GameScene extends Phaser.Scene {
                 fill: '#00ff00'
             }
         );
+        this.healthLabel.setDepth(100);
 
         // Health bar background
         this.healthBarBg = this.add.rectangle(
@@ -363,6 +364,7 @@ class GameScene extends Phaser.Scene {
             0x333333
         );
         this.healthBarBg.setOrigin(0, 0.5);
+        this.healthBarBg.setDepth(100);
 
         // Health bar fill
         this.healthBarFill = this.add.rectangle(
@@ -373,6 +375,7 @@ class GameScene extends Phaser.Scene {
             0x00ff00
         );
         this.healthBarFill.setOrigin(0, 0.5);
+        this.healthBarFill.setDepth(100);
 
         // Health bar border
         this.healthBarBorder = this.add.rectangle(
@@ -383,6 +386,7 @@ class GameScene extends Phaser.Scene {
         );
         this.healthBarBorder.setOrigin(0, 0.5);
         this.healthBarBorder.setStrokeStyle(2, 0xffffff);
+        this.healthBarBorder.setDepth(100);
     }
 
     updateHealthBar() {

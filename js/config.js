@@ -1,6 +1,6 @@
 // Game configuration constants
 const GameConfig = {
-    VERSION: '1.0.32c',
+    VERSION: '1.0.32-d', // My format is major.minor.monthday, with a suffix (a,b,c,d) for quick hotfixes
     WIDTH: 800,
     HEIGHT: 600,
     PLAYER_ROTATION_SPEED: 0.05,
