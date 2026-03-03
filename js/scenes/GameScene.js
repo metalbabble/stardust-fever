@@ -3,36 +3,28 @@ class GameScene extends Phaser.Scene {
         super({ key: 'GameScene' });
     }
 
-    preload() {
-        // Load player sprite
-        this.load.image('player', 'assets/player.gif');
-        // Load buggy sprite
-        this.load.image('buggy', 'assets/buggy.gif');
-        
+preload() {
+    // Load player sprite
+    this.load.image('player', 'assets/player.gif');
+    // Load buggy sprite
+    this.load.image('buggy', 'assets/buggy.gif');
+   
+    // Choose a random music file once and load just that one.
+    const bgmIndex = Phaser.Math.Between(1, GameConfig.MUSIC_COUNT);
+    this.selectedBgmKey = `bgm${bgmIndex}`;
+    this.load.audio(this.selectedBgmKey, `assets/bgm/m${bgmIndex}.mp3`);
+    // store index as well if needed elsewhere
+    this.selectedBgmIndex = bgmIndex;
+}
 
-        //TODO: make less repetative
-        // Load background music
-        this.load.audio('bgm1', 'assets/bgm/m1.mp3');
-        this.load.audio('bgm2', 'assets/bgm/m2.mp3');
-        this.load.audio('bgm3', 'assets/bgm/m3.mp3');
-        this.load.audio('bgm4', 'assets/bgm/m4.mp3');
-        this.load.audio('bgm5', 'assets/bgm/m5.mp3');
-        this.load.audio('bgm6', 'assets/bgm/m6.mp3');
-        this.load.audio('bgm7', 'assets/bgm/m7.mp3');
-        this.load.audio('bgm8', 'assets/bgm/m8.mp3');
-        this.load.audio('bgm9', 'assets/bgm/m9.mp3');
-        this.load.audio('bgm10', 'assets/bgm/m10.mp3');
-    }
+create() {
+    // Create starfield background
+    this.createStarfield();
 
-    create() {
-        // Create starfield background
-        this.createStarfield();
-
-        // Start background music
-        const bgmTracks = GameConfig.MUSIC_LIST; 
-        const randomTrack = Phaser.Utils.Array.GetRandom(bgmTracks);
-        this.bgMusic = this.sound.add(randomTrack, { loop: true, volume: 0.33 });
-        this.bgMusic.play();
+    // We already pre-selected one track in preload
+    const randomTrack = this.selectedBgmKey;
+    this.bgMusic = this.sound.add(randomTrack, { loop: true, volume: 0.33 });
+    this.bgMusic.play();
 
         // Initialize game state
         this.isGameOver = false;
@@ -347,7 +339,7 @@ class GameScene extends Phaser.Scene {
         this.healthLabel = this.add.text(
             10,
             10,
-            'SHIELD %',
+            'SHIELD: ',
             {
                 font: 'bold 16px Courier New',
                 fill: '#00ff00'
