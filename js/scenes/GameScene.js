@@ -61,9 +61,14 @@ class GameScene extends Phaser.Scene {
             }
         );
         this.scoreText.setOrigin(1, 0);
+        // HUD should be above everything
+        this.scoreText.setDepth(100);
 
         // Create player
         this.player = new Player(this, GameConfig.WIDTH / 2, GameConfig.HEIGHT / 2);
+        // make sure player renders above trail particles
+        this.player.setDepth(1);
+        this.playerDepth = 1; // for reference if needed
 
         // Create groups for game objects
         this.bullets = this.physics.add.group({
@@ -295,9 +300,11 @@ class GameScene extends Phaser.Scene {
         this.updateHealthBar();
         this.soundManager.playPlayerHit();
 
-        // Set player as invincible
+        // Set player as invincible and start blinking
         this.isInvincible = true;
-        player.setAlpha(0.5);
+        // ensure initial color
+        player.setTint(0xffffff);
+        this.startPlayerBlink(player);
 
         // Clear any existing invincibility timer
         if (this.invincibilityTimer) {
@@ -307,8 +314,13 @@ class GameScene extends Phaser.Scene {
         // Set timer to end invincibility
         this.invincibilityTimer = this.time.delayedCall(GameConfig.INVINCIBILITY_DURATION, () => {
             this.isInvincible = false;
+            // stop blinking and restore normal color
+            if (this.invincibilityBlinkEvent) {
+                this.invincibilityBlinkEvent.remove();
+                this.invincibilityBlinkEvent = null;
+            }
             if (player.active) {
-                player.setAlpha(1);
+                player.clearTint();
             }
             this.invincibilityTimer = null;
         });
@@ -342,6 +354,68 @@ class GameScene extends Phaser.Scene {
         }
     }
 
+    // helper used during invincibility to alternate player color
+    startPlayerBlink(player) {
+        // clear any existing blink event
+        if (this.invincibilityBlinkEvent) {
+            this.invincibilityBlinkEvent.remove();
+        }
+        this.invincibilityBlinkEvent = this.time.addEvent({
+            delay: 100,
+            loop: true,
+            callback: () => {
+                if (!player || !player.active) {
+                    return;
+                }
+                if (player.tintTopLeft === 0xffffff) {
+                    player.setTint(0xffaaaa);
+                } else {
+                    player.setTint(0xffffff);
+                }
+            }
+        });
+    }
+
+    // ------------------------------------------------------------------
+    // Rainbow trail for the player ship
+    // ------------------------------------------------------------------
+    createTrail(x, y) {
+        // lazy-initialize color index if not present
+        if (this.trailColorIndex === undefined) {
+            // classic rainbow colors
+            this.rainbowColors = [
+                0xff0000, // red
+                0xff7f00, // orange
+                0xffff00, // yellow
+                0x00ff00, // green
+                0x0000ff, // blue
+                0x4b0082, // indigo
+                0x8f00ff  // violet
+            ];
+            this.trailColorIndex = 0;
+        }
+
+        const color = this.rainbowColors[this.trailColorIndex];
+        this.trailColorIndex = (this.trailColorIndex + 1) % this.rainbowColors.length;
+
+        // simple fading rectangle; position doesn't need to move
+        const particle = this.add.rectangle(x, y, 4, 4, color);
+        particle.setAlpha(0.8);
+        // ensure trail is behind the player
+        if (this.playerDepth !== undefined) {
+            particle.setDepth(this.playerDepth - 1);
+        } else {
+            particle.setDepth(0);
+        }
+
+        this.tweens.add({
+            targets: particle,
+            alpha: 0,
+            duration: 300,
+            onComplete: () => particle.destroy()
+        });
+    }
+
     createHealthBar() {
         // Health bar label
         this.healthLabel = this.add.text(
@@ -353,6 +427,7 @@ class GameScene extends Phaser.Scene {
                 fill: '#00ff00'
             }
         );
+        this.healthLabel.setDepth(100);
 
         // Health bar background
         this.healthBarBg = this.add.rectangle(
@@ -363,6 +438,7 @@ class GameScene extends Phaser.Scene {
             0x333333
         );
         this.healthBarBg.setOrigin(0, 0.5);
+        this.healthBarBg.setDepth(100);
 
         // Health bar fill
         this.healthBarFill = this.add.rectangle(
@@ -373,6 +449,7 @@ class GameScene extends Phaser.Scene {
             0x00ff00
         );
         this.healthBarFill.setOrigin(0, 0.5);
+        this.healthBarFill.setDepth(100);
 
         // Health bar border
         this.healthBarBorder = this.add.rectangle(
@@ -383,6 +460,7 @@ class GameScene extends Phaser.Scene {
         );
         this.healthBarBorder.setOrigin(0, 0.5);
         this.healthBarBorder.setStrokeStyle(2, 0xffffff);
+        this.healthBarBorder.setDepth(100);
     }
 
     updateHealthBar() {

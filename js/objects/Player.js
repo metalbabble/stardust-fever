@@ -16,6 +16,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         
         // Store reference to scene
         this.gameScene = scene;
+
+        // trail throttle counter (spawn every couple frames)
+        this.trailFrameCounter = 0;
     }
 
     update(cursors) {
@@ -35,9 +38,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.body.acceleration
             );
             
-            // Play engine sound on each frame while thrusting
+            // engine sound while thrusting
             if (this.gameScene.soundManager) {
                 this.gameScene.soundManager.playEngineThrust();
+            }
+
+            // spawn a little rainbow trail particle behind the ship (throttled)
+            if (this.gameScene && typeof this.gameScene.createTrail === 'function') {
+                this.trailFrameCounter = (this.trailFrameCounter + 1) % 2;
+                if (this.trailFrameCounter === 0) {
+                    this.gameScene.createTrail(this.x, this.y);
+                }
             }
         } else {
             this.setAcceleration(0);
