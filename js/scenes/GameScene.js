@@ -19,6 +19,7 @@ class GameScene extends Phaser.Scene {
         this.load.audio('bgm5', 'assets/bgm/m5.mp3');
         this.load.audio('bgm6', 'assets/bgm/m6.mp3');
         this.load.audio('bgm7', 'assets/bgm/m7.mp3');
+        this.load.audio('bgm8', 'assets/bgm/m8.mp3');
     }
 
     create() {
