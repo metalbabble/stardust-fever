@@ -77,7 +77,14 @@ class TitleScene extends Phaser.Scene {
 
     createStarfield() {
         const graphics = this.add.graphics();
-        graphics.fillStyle(0x001144, 1);
+        // background gradient
+        graphics.fillGradientStyle(
+            0x001144, // top-left
+            0x001144, // top-right
+            0x001114, // bottom-left
+            0x001114, // bottom-right
+            1
+        );
         graphics.fillRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
 
         // Add stars
