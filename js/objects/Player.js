@@ -27,12 +27,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Forward movement
-        if (cursors.up.isDown) {
+        const isThrustingNow = cursors.up.isDown;
+        if (isThrustingNow) {
             this.scene.physics.velocityFromRotation(
                 this.rotation,
                 this.moveSpeed,
                 this.body.acceleration
             );
+            
+            // Play engine sound on each frame while thrusting
+            if (this.gameScene.soundManager) {
+                this.gameScene.soundManager.playEngineThrust();
+            }
         } else {
             this.setAcceleration(0);
         }

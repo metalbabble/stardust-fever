@@ -433,6 +433,13 @@ class GameScene extends Phaser.Scene {
         // Hide player
         this.player.setVisible(false);
 
+        // Hide HUD elements (health and score)
+        if (this.healthLabel) this.healthLabel.setVisible(false);
+        if (this.healthBarBg) this.healthBarBg.setVisible(false);
+        if (this.healthBarFill) this.healthBarFill.setVisible(false);
+        if (this.healthBarBorder) this.healthBarBorder.setVisible(false);
+        if (this.scoreText) this.scoreText.setVisible(false);
+
         // Create semi-transparent overlay
         const overlay = this.add.rectangle(
             0,

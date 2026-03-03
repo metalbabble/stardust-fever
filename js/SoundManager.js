@@ -237,4 +237,32 @@ class SoundManager {
             oscillator.stop(now + delay + 0.15);
         });
     }
+
+    // Engine thrust - pulsed engine sound for player movement
+    playEngineThrust() {
+        if (!this.context) return;
+
+        const oscillator = this.context.createOscillator();
+        const gainNode = this.context.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(this.context.destination);
+
+        // Sawtooth wave creates a rough, engine-like quality
+        oscillator.type = 'sawtooth';
+        
+        const now = this.context.currentTime;
+        const duration = 0.08; // Short pulse so it can be called repeatedly
+        
+        // Slight frequency modulation to make it sound more organic
+        oscillator.frequency.setValueAtTime(150, now);
+        oscillator.frequency.linearRampToValueAtTime(135, now + duration);
+
+        // Volume envelope - quick attack, quick decay
+        gainNode.gain.setValueAtTime(this.masterVolume * 0.15, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration);
+
+        oscillator.start(now);
+        oscillator.stop(now + duration);
+    }
 }
