@@ -1,7 +1,7 @@
 // Game configuration constants
 const GameConfig = {
     // My format is major.minor.monthday, with a suffix (a,b,c,d) for quick hotfixes
-    VERSION: '1.0.32-e', 
+    VERSION: '1.1', 
     
     WIDTH: 800,
     HEIGHT: 600,

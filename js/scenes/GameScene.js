@@ -125,9 +125,13 @@ create() {
 
         // Spawn enemies
         if (time > this.lastSpawnTime + this.spawnRate) {
-            this.spawnEnemy();
+            const minutesElapsed = Math.floor((time - this.gameStartTime) / 60000);
+            const spawnCount = 1 + minutesElapsed;
+            for (let i = 0; i < spawnCount; i++) {
+                this.spawnEnemy();
+            }
             this.lastSpawnTime = time;
-            
+
             // Gradually increase difficulty
             if (this.spawnRate > GameConfig.SPAWN_RATE_MIN) {
                 this.spawnRate -= GameConfig.SPAWN_RATE_DECREASE;
